@@ -1,0 +1,24 @@
+{
+  "name": "generator-hapiest",
+  "version": "0.0.1",
+  "description": "A generator that helps you create apps based on the Hapiest framework, which wraps the Hapi.js MVC framework",
+  "files": [
+    "generators/app",
+    "generators/router"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "Jonathan Fulton",
+  "dependencies": {
+    "async": "^2.0.0-rc.4",
+    "inquirer": "^0.12.0",
+    "inquirer-directory": "^2.0.0",
+    "lodash": "^4.12.0",
+    "path": "^0.12.7",
+    "yeoman-generator": "^0.23.3"
+  }
+}
