@@ -3,8 +3,14 @@
 const _ = require('lodash');
 const Async = require('async');
 const Path = require('path');
+
 const generators = require('yeoman-generator');
 const inquirer = require('../../lib/customInquirer');
+
+const VoService = require('../../lib/vo/voService');
+const VoCreateFileArgsFactory = require('../../lib/vo/VoCreateFileArgsFactory');
+const FactoryService = require('../../lib/factory/factoryService');
+const FactoryCreateFileArgsFactory = require('../../lib/factory/factoryCreateFileArgsFactory');
 
 module.exports = generators.Base.extend({
     constructor: function() {
@@ -23,6 +29,11 @@ module.exports = generators.Base.extend({
             name: 'directory',
             message: 'Select the directory to save your VO:',
             basePath: '.'
+        }, {
+            type: 'confirm',
+            name: 'createFactory',
+            message: 'Create corresponding factory?',
+            default: true
         }];
 
         const self = this;
@@ -37,23 +48,24 @@ module.exports = generators.Base.extend({
             }],
             createVOFile: ['promptProperties', (results, next) => {
                 const answers = results.prompt;
-                const className = _.upperFirst(_.camelCase(answers.className));
-                const fileName = _.lowerFirst(className) + '.js';
-                const directory = answers.directory;
-                const destinationPath = Path.join(directory, fileName);
                 const properties = results.promptProperties;
-                const templateParameters = {
-                    voClassName: className,
-                    voClassProperties: properties
-                };
-                self.log(answers);
-                self.log(templateParameters);
-                self.log(destinationPath);
 
-                self.log("TemplateRoot: " + self.sourceRoot());
-                self.log("DestinationRoot: " + self.destinationRoot());
+                const createVoArgs = VoCreateFileArgsFactory.createFromPromptAnswers(this, answers, properties);
+                const voFilePath = VoService.createFile(createVoArgs);
+                
+                if (answers.createFactory) {
+                    const createFactoryArgs = FactoryCreateFileArgsFactory.createFromJsObj({
+                        generatorContext: this,
+                        destinationDirectory: createVoArgs.destinationDirectory,
+                        factoryClassName: createVoArgs.className + 'Factory',
+                        factoryFunctions: ['createFromJsObj'],
+                        associatedVoClassName: createVoArgs.className,
+                        associatedVoFilePath: './' + Path.basename(voFilePath)
+                    });
+                    
+                    FactoryService.createFile(createFactoryArgs);
+                }
 
-                self.template('baseVO.js', destinationPath, templateParameters);
                 next();
             }]
         }, (err, results) => {
@@ -71,22 +83,22 @@ class Internals {
     static promptProperties(properties, next) {
         const prompt = [{
             type: 'input',
-            name: 'propertyName',
+            name: 'name',
             message: 'Property (blank to end)'
         }, {
             type: 'input',
-            name: 'propertyType',
+            name: 'type',
             message: 'Property type',
             default: 'any'
         }];
 
         inquirer.prompt(prompt, (answers) => {
-           if (answers.propertyName === '') {
+           if (answers.name === '') {
                next(null, properties);
            } else {
                properties.push({
-                   propertyName: answers.propertyName,
-                   propertyType: answers.propertyType
+                   name: answers.name,
+                   type: answers.type
                });
                Internals.promptProperties(properties, next);
            }
