@@ -16,12 +16,12 @@ class MyObj extends VO {
 
     
     /**
-     * @return {int}
+     * @returns {int}
      */
     get id() {return this.get('id');}
     
     /**
-     * @return {string}
+     * @returns {string}
      */
     get name() {return this.get('name');}
     
