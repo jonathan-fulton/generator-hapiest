@@ -5,17 +5,35 @@ const MyObj = require('./myObj');
 class MyObjFactory {
 
     /**
+     * @param {object} obj
+     * @param {int} obj.id
+     * @param {string} obj.name
+     *
      * @returns {MyObj}
      */
-    static createFromNodeConfig() {
-        return new MyObj({});
+    static createFromNodeConfig(obj) {
+        const newArgs = {
+          id: obj.id,
+          name: obj.name
+        };
+            
+        return new MyObj(newArgs);
     }
 
     /**
+     * @param {object} obj
+     * @param {int} obj.id
+     * @param {string} obj.name
+     *
      * @returns {MyObj}
      */
-    static createFromJsObj() {
-        return new MyObj({});
+    static createFromJsObj(obj) {
+        const newArgs = {
+          id: obj.id,
+          name: obj.name
+        };
+            
+        return new MyObj(newArgs);
     }
 
 }
