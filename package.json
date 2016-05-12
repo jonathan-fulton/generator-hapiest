@@ -4,7 +4,8 @@
   "description": "A generator that helps you create apps based on the Hapiest framework, which wraps the Hapi.js MVC framework",
   "files": [
     "generators/app",
-    "generators/router"
+    "generators/factory",
+    "generators/vo"
   ],
   "scripts": {
     "test": "NODE_ENV=test mocha ./test/unit --recursive"
