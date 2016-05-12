@@ -60,7 +60,8 @@ module.exports = generators.Base.extend({
                         factoryClassName: createVoArgs.className + 'Factory',
                         factoryFunctions: ['createFromJsObj'],
                         associatedVoClassName: createVoArgs.className,
-                        associatedVoFilePath: './' + Path.basename(voFilePath)
+                        associatedVoFilePath: './' + Path.basename(voFilePath),
+                        associatedVoProperties: properties
                     });
                     
                     FactoryService.createFile(createFactoryArgs);

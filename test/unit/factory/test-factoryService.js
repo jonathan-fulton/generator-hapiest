@@ -32,7 +32,8 @@ describe('FactoryService', function() {
                 factoryClassName: 'MyObjFactory',
                 factoryFunctions: ['createFromNodeConfig', 'createFromJsObj'],
                 associatedVoClassName: 'MyObj',
-                associatedVoFilePath: './myObj.js'
+                associatedVoFilePath: './myObj.js',
+                associatedVoProperties: [{name: 'id', type: 'int'}, {name: 'name', type: 'string'}]
             });
 
             FactoryService.createFile(createArgs);
