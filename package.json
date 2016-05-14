@@ -9,10 +9,19 @@
   "scripts": {
     "test": "NODE_ENV=test mocha ./test/unit --recursive"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathan-fulton/generator-hapiest.git"
+  },
   "keywords": [
     "yeoman-generator"
   ],
   "author": "Jonathan Fulton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonathan-fulton/generator-hapiest/issues"
+  },
+  "homepage": "https://github.com/jonathan-fulton/generator-hapiest#readme",
   "dependencies": {
     "async": "^2.0.0-rc.4",
     "hapiest-vo": "0.0.2",
