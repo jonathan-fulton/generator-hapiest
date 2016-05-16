@@ -3,6 +3,7 @@
 const generators = require('yeoman-generator');
 const Async = require('async');
 const _ = require('lodash');
+const Path = require('path');
 
 const inquirer = require('../../lib/customInquirer');
 
@@ -35,7 +36,6 @@ module.exports = generators.Base.extend({
                 methods: methods,
                 dependencies: dependencies
             };
-            console.log(classObjArgs);
             const classObj = ClassFactory.createFromJsObj(classObjArgs);
 
             const createArgs = ClassCreateFileArgsFactory.create({
@@ -76,25 +76,11 @@ class Internals {
      * @param {function(err, {className: string, directory: string}[])} done
      */
     static promptForMethods(done) {
-        const methods = [];
-
-        let method = null;
-        Async.doWhilst((next) => {
-           Internals.promptForMethod((err, localMethod) => {
-               method = localMethod;
-               if (method) {
-                   methods.push(method);
-               }
-               next();
-           })
-        }, () => {return (method);}
-        ,  (err, results) => {
-                done(null, methods);
-            });
+        Internals.repeatPrompt(Internals.promptForMethod, done);
     }
 
     /**
-     * @param {function(err, {className: string, directory: string})} done
+     * @param {function(err, {name: string, type: string, returnType: string, body: string, args:{name: string, type: string}[]}[])} done
      */
     static promptForMethod(done) {
         Async.auto({
@@ -148,20 +134,119 @@ class Internals {
             };
 
             done(null, method);
-        })
+        });
     }
 
     /**
-     * @param {function(err, {className: string, directory: string})} done
+     * @param {function(err, {name: string, type: string}[])} done
      */
     static promptForMethodArguments(done) {
-        done(null, []);
+        Internals.repeatPrompt(Internals.promptForMethodArgument, done);
+    }
+
+
+    static promptForMethodArgument(done) {
+        Async.auto({
+            argName: (next) => {
+                const argNamePrompt = [{
+                    type: 'input',
+                    name: 'argName',
+                    message: 'Argument (empty to quit): '
+                }];
+                inquirer.prompt(argNamePrompt, (answers) => {
+                    if (answers.argName === '') {
+                        done(); // Exit everything - we're done!
+                    } else {
+                        next(null, answers.argName);
+                    }
+                });
+            },
+            argType: ['argName', function(results, next) {
+                const argName = results.argName;
+                var prompts = [{
+                    type: 'input',
+                    name: 'argType',
+                    message: `${argName} type: `
+                }];
+
+                inquirer.prompt(prompts, (answers) => {
+                    next(null, answers.argType);
+                });
+            }]
+        }, (err, results) => {
+            const arg = {
+                name: results.argName,
+                type: results.argType
+            };
+
+            done(null, arg);
+        });
     }
 
     /**
      * @param {function(err, {className: string, directory: string})} done
      */
     static promptForDependencies(done) {
-        done(null, []);
+        Internals.repeatPrompt(Internals.promptForDependency, done);
+    }
+
+    static promptForDependency(done) {
+        Async.auto({
+            requireString: (next) => {
+                const requireStringPrompt = [{
+                    type: 'input',
+                    name: 'requireString',
+                    message: 'Requires (empty to quit): '
+                }];
+                inquirer.prompt(requireStringPrompt, (answers) => {
+                    if (answers.requireString === '') {
+                        done(); // Exit everything - we're done!
+                    } else {
+                        next(null, answers.requireString);
+                    }
+                });
+            },
+            variableName: ['requireString', function(results, next) {
+                const module = Path.basename(results.requireString);
+                var prompts = [{
+                    type: 'input',
+                    name: 'variableName',
+                    message: `${module} variable: `
+                }];
+
+                inquirer.prompt(prompts, (answers) => {
+                    next(null, answers.variableName);
+                });
+            }]
+        }, (err, results) => {
+            const dependency = {
+                variableName: results.variableName,
+                requireString: results.requireString
+            };
+
+            done(null, dependency);
+        });
+    }
+
+    /**
+     * @param {function(function(err, any))} promptFunction
+     * @param {function(err, Array)} done
+     */
+    static repeatPrompt(promptFunction, done) {
+        const results = [];
+
+        let result = null;
+        Async.doWhilst((next) => {
+                promptFunction((err, localResult) => {
+                    result = localResult;
+                    if (result) {
+                        results.push(result);
+                    }
+                    next();
+                })
+            }, () => {return (result);}
+            ,  (err) => {
+                done(null, results);
+            });
     }
 }

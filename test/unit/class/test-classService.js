@@ -84,8 +84,8 @@ describe('ClassService', function() {
         });
 
         afterEach(function(done) {
-            //removeDirectory(tmpDirectory, done);
-            done();
+            removeDirectory(tmpDirectory, done);
+            //done();
         });
 
     });
