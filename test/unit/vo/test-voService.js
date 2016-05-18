@@ -19,6 +19,11 @@ describe('VoService', function() {
             removeDirectory(tmpDirectory, done);
         });
 
+        afterEach(function(done) {
+            removeDirectory(tmpDirectory, done);
+            //done();
+        });
+
         it('1) Should generate a VO file with all properties', function(done) {
 
             const generatorContext = new Vo({
@@ -56,10 +61,6 @@ describe('VoService', function() {
             });
         });
 
-        afterEach(function(done) {
-            removeDirectory(tmpDirectory, done);
-            //done();
-        });
     });
 
 });

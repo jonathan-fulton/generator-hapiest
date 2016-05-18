@@ -21,9 +21,15 @@ describe('ClassService', function() {
             removeDirectory(tmpDirectory, done);
         });
 
+        afterEach(function(done) {
+            removeDirectory(tmpDirectory, done);
+            //done();
+        });
+
         it('1) Should generate a file matching 1-classOutput', function(done) {
             const classObj = ClassFactory.createFromJsObj({
                 name: 'MyAwesomeClass',
+                extends: 'BlahParentClass',
                 dependencies: [
                     {variableName: 'foo', requireString: './someFile'},
                     {variableName: 'bar', requireString: './anotherFile'}
@@ -46,7 +52,7 @@ describe('ClassService', function() {
                 }, {
                     name: 'noArgs',
                     type: 'get',
-                    args: [],
+                    args: [{name: 'obj', type: 'object', jsDocTypes: [{name: 'obj.prop1', type: 'string'},{name: 'obj.prop2', type: 'int'}]}],
                     body: '',
                     returnType: 'int'
                 }]
@@ -81,11 +87,6 @@ describe('ClassService', function() {
                     done(e);
                 }
             });
-        });
-
-        afterEach(function(done) {
-            removeDirectory(tmpDirectory, done);
-            //done();
         });
 
     });

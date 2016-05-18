@@ -3,3 +3,6 @@ node_modules
 
 # WebStorm project config
 .idea
+
+# All temporary folders within the testing folder - used for putting temporary files generated during testing
+test/**/tmp

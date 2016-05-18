@@ -3,7 +3,7 @@
 const foo = require('./someFile');
 const bar = require('./anotherFile');
 
-class MyAwesomeClass {
+class MyAwesomeClass extends BlahParentClass {
 
    /**
     * @param {string} arg1
@@ -27,9 +27,13 @@ class MyAwesomeClass {
     }
 
    /**
+    * @param {object} obj
+    * @param {string} obj.prop1
+    * @param {int} obj.prop2
+    *
     * @returns {int}
     */
-    get noArgs() {
+    get noArgs(obj) {
 
     }
 

@@ -19,6 +19,11 @@ describe('FactoryService', function() {
             removeDirectory(tmpDirectory, done);
         });
 
+        afterEach(function(done) {
+            removeDirectory(tmpDirectory, done);
+            //done();
+        });
+
         it('1) Should generate a Factory file with all properties', function(done) {
 
             const generatorContext = new Vo({
@@ -32,7 +37,7 @@ describe('FactoryService', function() {
                 factoryClassName: 'MyObjFactory',
                 factoryFunctions: ['createFromNodeConfig', 'createFromJsObj'],
                 associatedVoClassName: 'MyObj',
-                associatedVoFilePath: './myObj.js',
+                associatedVoFileName: 'myObj',
                 associatedVoProperties: [{name: 'id', type: 'int'}, {name: 'name', type: 'string'}]
             });
 
@@ -56,10 +61,6 @@ describe('FactoryService', function() {
             });
         });
 
-        afterEach(function(done) {
-            removeDirectory(tmpDirectory, done);
-            //done();
-        });
     });
 
 });
