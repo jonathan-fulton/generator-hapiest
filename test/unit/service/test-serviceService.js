@@ -66,8 +66,8 @@ describe('ServiceService', function() {
                         'create/userDownloadServiceCreateArgsFactory.js',
                         'get/userDownload.js',
                         'get/userDownloadFactory.js',
-                        'dao/userDownloadServiceDao.js',
-                        'dao/userDownloadServiceDaoSqlFactory.js'
+                        'dao/userDownloadDao.js',
+                        'dao/userDownloadDaoFactory.js'
                     ];
 
                     testFiles(filesToTest, 'root-1');

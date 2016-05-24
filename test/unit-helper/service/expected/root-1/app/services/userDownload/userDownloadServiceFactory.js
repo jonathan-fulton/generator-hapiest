@@ -1,7 +1,7 @@
 'use strict';
 
 const UserDownloadService = require('./userDownloadService');
-const UserDownloadServiceDao = require('./dao/userDownloadServiceDao');
+const UserDownloadDaoFactory = require('./dao/userDownloadDaoFactory');
 
 class UserDownloadServiceFactory {
 
@@ -12,7 +12,7 @@ class UserDownloadServiceFactory {
     * @returns {UserDownloadService}
     */
     static create(mysqlService, logger) {
-        const dao = new UserDownloadServiceDao(mysqlService, logger);
+        const dao = UserDownloadDaoFactory.create(mysqlService, logger);
         return new UserDownloadService(dao, logger);
     }
 
