@@ -1,6 +1,6 @@
 {
   "name": "generator-hapiest",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A generator that helps you create apps based on the Hapiest framework, which wraps the Hapi.js MVC framework",
   "files": [
     "generators",
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/jonathan-fulton/generator-hapiest#readme",
   "dependencies": {
     "async": "^2.0.0-rc.4",
+    "chance": "^1.0.3",
     "hapiest-vo": "^0.0.3",
     "inquirer": "^0.12.0",
     "inquirer-directory": "^2.0.0",

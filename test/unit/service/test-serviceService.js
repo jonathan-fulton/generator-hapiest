@@ -43,15 +43,18 @@ describe('ServiceService', function() {
                 createArgsVoProperties: [
                     {name: 'firstName', type: 'string'},
                     {name: 'lastName', type: 'string'},
-                    {name: 'email', type: 'string'}
+                    {name: 'email', type: 'string'},
+                    {name: 'numSignupAttempts', type: 'int'}
                 ],
                 coreVoProperties: [
                     {name: 'id', type: 'int'},
                     {name: 'firstName', type: 'string'},
                     {name: 'lastName', type: 'string'},
                     {name: 'email', type: 'string'},
+                    {name: 'numSignupAttempts', type: 'int'},
                     {name: 'dateCreated', type: 'Date'}
-                ]
+                ],
+                chanceSeed: 10
             });
 
             ServiceService.createFiles(createArgs);
@@ -59,7 +62,7 @@ describe('ServiceService', function() {
             generatorContext.fs.commit((err) => {
                 try {
 
-                    const filesToTest = [
+                    const coreFilesToTest = [
                         'userDownloadService.js',
                         'userDownloadServiceFactory.js',
                         'create/userDownloadServiceCreateArgs.js',
@@ -70,7 +73,13 @@ describe('ServiceService', function() {
                         'dao/userDownloadDaoFactory.js'
                     ];
 
-                    testFiles(filesToTest, 'root-1');
+                    testCoreFiles(coreFilesToTest, 'root-1');
+
+                    const testFilesToTest = [
+                        'test-userDownloadService.js'
+                    ];
+
+                    testTestFiles(testFilesToTest, 'root-1');
 
                     done();
                 } catch(e) {
@@ -82,11 +91,25 @@ describe('ServiceService', function() {
     });
 });
 
-function testFiles(filesToTest, expectedRootFolderName) {
+function testCoreFiles(filesToTest, expectedRootFolderName) {
     filesToTest.forEach(file => {
 
         const expectedFilePath = Path.join(__dirname, '../../unit-helper/service/expected/', expectedRootFolderName, 'app/services/userDownload/', file);
         const generatedFilePath = Path.join(tmpDirectory, 'app/services/userDownload/', file);
+
+        const expectedFileContents = Fs.readFileSync(expectedFilePath, 'utf8');
+        const generatedFileContents = Fs.readFileSync(generatedFilePath, 'utf8');
+
+        Should.exist(generatedFileContents);
+        generatedFileContents.should.eql(expectedFileContents);
+    });
+}
+
+function testTestFiles(filesToTest, expectedRootFolderName) {
+    filesToTest.forEach(file => {
+
+        const expectedFilePath = Path.join(__dirname, '../../unit-helper/service/expected/', expectedRootFolderName, 'test/unit/app/services/', file);
+        const generatedFilePath = Path.join(tmpDirectory, 'test/unit/app/services/', file);
 
         const expectedFileContents = Fs.readFileSync(expectedFilePath, 'utf8');
         const generatedFileContents = Fs.readFileSync(generatedFilePath, 'utf8');
