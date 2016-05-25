@@ -12,7 +12,7 @@ class UserDownloadService {
     }
 
    /**
-    * @param {*} createArgs
+    * @param {UserDownloadServiceCreateArgs} createArgs
     *
     * @returns {Promise.<int,Error>}
     */
