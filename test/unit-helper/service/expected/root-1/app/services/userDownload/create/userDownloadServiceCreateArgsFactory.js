@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const UserDownloadServiceCreateArgs = require('./userDownloadServiceCreateArgs');
 
 class UserDownloadServiceCreateArgsFactory {
@@ -14,13 +15,7 @@ class UserDownloadServiceCreateArgsFactory {
     * @returns {UserDownloadServiceCreateArgs}
     */
     static createFromJsObj(obj) {
-        const newArgs = {
-            firstName: obj.firstName,
-            lastName: obj.lastName,
-            email: obj.email,
-            numSignupAttempts: obj.numSignupAttempts
-        };
-
+       const newArgs = _.cloneDeep(obj);
        return new UserDownloadServiceCreateArgs(newArgs);
     }
 

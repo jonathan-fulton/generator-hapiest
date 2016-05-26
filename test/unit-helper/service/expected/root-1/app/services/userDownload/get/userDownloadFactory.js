@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const UserDownload = require('./userDownload');
 
 class UserDownloadFactory {
@@ -16,15 +17,7 @@ class UserDownloadFactory {
     * @returns {UserDownload}
     */
     static createFromJsObj(obj) {
-        const newArgs = {
-            id: obj.id,
-            firstName: obj.firstName,
-            lastName: obj.lastName,
-            email: obj.email,
-            numSignupAttempts: obj.numSignupAttempts,
-            dateCreated: obj.dateCreated
-        };
-
+       const newArgs = _.cloneDeep(obj);
        return new UserDownload(newArgs);
     }
 
@@ -40,15 +33,10 @@ class UserDownloadFactory {
     * @returns {UserDownload}
     */
     static createFromDbRow(dbRow) {
-        const newArgs = {
-            id: dbRow.id,
-            firstName: dbRow.first_name,
-            lastName: dbRow.last_name,
-            email: dbRow.email,
-            numSignupAttempts: dbRow.num_signup_attempts,
-            dateCreated: dbRow.date_created
-        };
-            
+        const newArgs = {};
+        Object.keys(dbRow).forEach(column => {
+            newArgs[_.camelCase(column)] = dbRow[column];
+        });
         return UserDownloadFactory.createFromJsObj(newArgs);
     }
 

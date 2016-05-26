@@ -1,6 +1,6 @@
 {
   "name": "generator-hapiest",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A generator that helps you create apps based on the Hapiest framework, which wraps the Hapi.js MVC framework",
   "files": [
     "generators",

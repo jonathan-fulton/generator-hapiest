@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const MyObj = require('./myObj');
 
 class MyObjFactory {
@@ -12,11 +13,7 @@ class MyObjFactory {
     * @returns {MyObj}
     */
     static createFromNodeConfig(obj) {
-        const newArgs = {
-            id: obj.id,
-            name: obj.name
-        };
-
+       const newArgs = _.cloneDeep(obj);
        return MyObjFactory.createFromJsObj(newArgs);
     }
 
@@ -28,11 +25,7 @@ class MyObjFactory {
     * @returns {MyObj}
     */
     static createFromJsObj(obj) {
-        const newArgs = {
-            id: obj.id,
-            name: obj.name
-        };
-
+       const newArgs = _.cloneDeep(obj);
        return new MyObj(newArgs);
     }
 
