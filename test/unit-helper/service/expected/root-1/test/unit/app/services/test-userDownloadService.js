@@ -15,14 +15,17 @@ const tablesToReplicate = ['table1','table2','table3'];
 const tablesToCopyData = ['table1','table2'];
 
 const dbSetup = () => {
-    return databaseSetup.replicateTables(tablesToReplicate)
+    return databaseSetup.dropAllTables()
+            .then(() => {
+                return Promise.all([databaseSetup.replicateTables(tablesToReplicate)]);
+            })
             .then(() => {
                 return Promise.all([databaseSetup.copyDataForTables(tablesToCopyData)])
             });
 };
 
 const dbTeardown = () => {
-    return databaseSetup.replicateTables(tablesToReplicate);
+    return databaseSetup.dropAllTables();
 };
 
 describe('UserDownloadService', function() {

@@ -1,6 +1,6 @@
 {
   "name": "generator-hapiest",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A generator that helps you create apps based on the Hapiest framework, which wraps the Hapi.js MVC framework",
   "files": [
     "generators",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "fs": "0.0.2",
     "hapiest-logger": "0.0.4",
-    "hapiest-mysql": "0.0.7",
+    "hapiest-mysql": "0.0.10",
     "hapiest-vo": "0.0.3",
     "rimraf": "^2.5.2",
     "should": "^8.3.1",
