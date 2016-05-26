@@ -16,8 +16,7 @@ class UserDownloadDaoFactory {
        const daoArgs = MysqlDaoArgsFactory.createFromJsObj({
             mysqlService: mysqlService,
             createVoFromDbRowFunction: VoFactory.createFromDbRow,
-            logger: logger,
-            tableName: 'user_downloads'
+            logger: logger
         });
         const dao = new Dao(daoArgs);
         return dao;

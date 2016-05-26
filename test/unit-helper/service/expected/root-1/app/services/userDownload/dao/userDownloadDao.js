@@ -5,6 +5,13 @@ const MysqlDao = require('hapiest-mysql/lib/mysqlDao');
 class UserDownloadDao extends MysqlDao {
 
    /**
+    * @returns {string}
+    */
+    get tableName() {
+       return 'user_downloads';
+    }
+
+   /**
     * @param {int} id
     *
     * @returns {Promise.<UserDownload>}
